@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-argo-bucket
+  namespace: argo
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: create-bucket
+        image: minio/mc:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            mc alias set local http://argo-minio:9000 minioadmin minioadmin
+            mc mb local/argo-artifacts --ignore-existing
+            mc ls local/
+        env: []
+      serviceAccountName: argo-workflow

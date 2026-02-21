@@ -1,0 +1,16 @@
+apiVersion: v2
+name: argo-workflow-with-minio
+description: Argo Workflows with MinIO for artifact storage
+type: application
+version: 0.1.0
+appVersion: "3.7.9"
+
+dependencies:
+  - name: argo-workflows
+    version: "0.47.3"
+    repository: "https://argoproj.github.io/argo-helm"
+    condition: argo-workflows.enabled
+  - name: minio
+    version: "17.0.21"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: minio.enabled

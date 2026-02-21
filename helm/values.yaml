@@ -1,0 +1,53 @@
+global:
+  security:
+    allowInsecureImages: true
+
+argo-workflows:
+  server:
+    serviceType: NodePort
+    authModes:
+      - server
+  artifactRepository:
+    s3:
+      bucket: argo-artifacts
+      endpoint: argo-minio:9000
+      insecure: true
+      accessKeySecret:
+        name: argo-minio
+        key: root-user
+      secretKeySecret:
+        name: argo-minio
+        key: root-password
+  workflow:
+    serviceAccount:
+      create: true
+      name: argo-workflow
+
+minio:
+  console:
+    enabled: false
+  image:
+    registry: docker.io
+    repository: minio/minio
+    tag: RELEASE.2025-09-07T16-13-09Z
+  command:
+    - minio
+    - server
+    - /bitnami/minio/data
+    - --console-address
+    - :9001
+  auth:
+    rootUser: minioadmin
+    rootPassword: minioadmin
+  volumePermissions:
+    enabled: true
+    securityContext:
+      runAsUser: 0
+      runAsNonRoot: false
+  volumes:
+    mounts:
+      - name: data
+        mountPath: /bitnami/minio/data
+  buckets:
+    - name: argo-artifacts
+      policy: public
