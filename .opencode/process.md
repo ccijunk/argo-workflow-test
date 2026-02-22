@@ -168,7 +168,7 @@ metadata:
   name: server-token
   namespace: argo
   annotations:
-    kubernetes.io/service-account.name: argo-argo-workflows-server
+    kubernetes.io/service-account.name: argo-workflows-server
 type: kubernetes.io/service-account-token
 EOF
 

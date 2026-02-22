@@ -38,6 +38,13 @@ kubectl get pods -n argo
 - Create test workflow with artifact output to MinIO
 - Run `argo cp` to copy artifact
 
+
+### 7. Test on exit to delete 
+- Test secret workflow: apply secret → echo in workflow → auto-delete via onExit
+- adjust rbac make workflow 
+- write a test script, kubectl apply secret and the argo submit
+- add test case to ./test-case-workflow and check
+
 ## Configuration Details
 
 ### MinIO (values.yaml)
