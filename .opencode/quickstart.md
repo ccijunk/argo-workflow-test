@@ -102,7 +102,7 @@ argo list -n argo
 In a separate terminal, start port-forward to the Argo server:
 
 ```bash
-kubectl port-forward -n argo svc/argo-argo-workflows-server 2746:2746
+kubectl port-forward -n argo svc/argo-workflows-server 2746:2746 > /tmp/pf.log 2>&1 &
 ```
 
 ### 8. Copy Artifacts with argo cp
@@ -110,12 +110,11 @@ kubectl port-forward -n argo svc/argo-argo-workflows-server 2746:2746
 ```bash
 # Get the latest workflow name
 WORKFLOW=$(argo list -n argo --no-headers | head -1 | awk '{print $1}')
-
 # Copy artifacts
 ARGO_SERVER=localhost:2746 \
 ARGO_SECURE=false \
 ARGO_TOKEN="$TOKEN" \
-  argo cp "$WORKFLOW" ./artifacts -n argo
+  argo cp "$WORKFLOW" ./artifacts -n argo --path {artifactName}
 ```
 
 ### 9. Verify Artifacts
