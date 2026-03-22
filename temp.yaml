@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+    generateName: org-repo-
+    labels:
+        jobPRID: "101"
+        jobRepositoryName: org-repo
+        pipeline/run-id: temp-simple-123
+spec:
+    templates:
+        - name: main-script
+          metadata: {}
+          script:
+            name: alpine
+            image: alpine:latest
+            command:
+                - sh
+            source: |
+                #!/bin/sh
+                echo "Hello from temp test script"
+                echo "Current directory: $(pwd)"
+                ls -la
+            resources:
+                limits:
+                    cpu: "1"
+                    memory: 512Mi
+                requests:
+                    cpu: "1"
+                    memory: 512Mi
+            workingDir: /workspace
+            env:
+                - name: BUILDNUMBER
+                  value: "789"
+                - name: JOB_ID
+                  value: temp-job-123
+                - name: TEST_VAR
+                  value: temp-test-value
+                - name: WORKSPACE
+                  value: /workspace
+                - name: workspace
+                  value: /workspace
+    entrypoint: main-script
+    arguments: {}
+    activeDeadlineSeconds: 216000
+    securityContext:
+        runAsUser: 0

@@ -29,7 +29,20 @@ argo-workflows:
           resources: ["secrets"]
           verbs: ["delete"]
 
+  controller:
+
+    workflowNamespaces:
+      - argo 
+    workflowDefaults: 
+      spec:
+        ttlStrategy:
+          secondsAfterCompletion: 604800 
+        serviceAccountName: argo-workflow
+        activeDeadlineSeconds: 7200 
+
+
 minio:
+  enabled: false
   console:
     enabled: false
   image:

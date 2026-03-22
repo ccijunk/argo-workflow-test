@@ -14,14 +14,11 @@ This guide walks you through deploying Argo Workflows with MinIO and testing the
 ### 1. Start Minikube
 
 ```bash
-# Start minikube with proxy configuration (adjust proxy IP/port as needed)
 minikube start -p test-cluster \
   --kubernetes-version=1.32.0 \
   --driver=docker \
   --container-runtime=containerd \
-  --cni=bridge \
-  --docker-env=HTTP_PROXY=http://192.168.10.205:7897 \
-  --docker-env=HTTPS_PROXY=http://192.168.10.205:7897
+  --cni=bridge
 ```
 
 ### 2. Add Helm Repositories
@@ -142,7 +139,7 @@ server:
 
 Then upgrade the release:
 ```bash
-helm upgrade argo ./ -n argo
+helm upgrade argo-workflows  ./ -n argo
 ```
 
 **Note**: Adding `client` mode as well (`[server, client]`) allows the CLI to use kubeconfig credentials without explicitly passing a token. With only `server` mode, you must always provide the token explicitly.

@@ -9,12 +9,9 @@ Deploy Argo Workflows with MinIO (S3-compatible storage) in the same Helm releas
 
 ### 1. Start Minikube Cluster
 - Started minikube with docker driver
-- Required proxy configuration for image pulls
-- Used proxy `192.168.10.205:7897` (Clash Verge with "Allow LAN" enabled)
-- Proxy worked when host proxy env vars were unset before starting minikube
 
 ```bash
-minikube start -p test-cluster --kubernetes-version=1.32.0 --driver=docker --container-runtime=containerd --cni=bridge --docker-env=HTTP_PROXY=http://192.168.10.205:7897 --docker-env=HTTPS_PROXY=http://192.168.10.205:7897
+minikube start -p test-cluster --kubernetes-version=1.32.0 --driver=docker --container-runtime=containerd --cni=bridge
 ```
 
 ### 2. Add Helm Repositories
@@ -112,13 +109,6 @@ cd helm && helm install argo . -n argo --create-namespace \
 ```bash
 argo submit test-case-workflow/test-workflow.yaml -n argo --serviceaccount argo-workflow
 ```
-
-## Proxy Configuration Notes
-- Host proxy: `127.0.0.1:7897` (Clash Verge)
-- Must enable "Allow LAN" in Clash Verge to bind to `0.0.0.0:7897`
-- Host network IP: `192.168.10.205`
-- Minikube needs proxy via `--docker-env` flags
-- Must unset host proxy env vars before starting minikube to avoid conflict
 
 ## Final Working Configuration
 
